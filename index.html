@@ -258,19 +258,71 @@ section { padding: 90px 48px; }
 
 /* ══ DG ══ */
 #dg { background: var(--bg); display: grid; grid-template-columns: 1fr 1.3fr; gap: 70px; align-items: center; }
-.dg-photo-wrapper { position: relative; }
-.dg-photo-frame { aspect-ratio: 3/4; background: var(--bg-alt); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; position: relative; overflow: hidden; }
-.dg-photo-frame::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--red); }
-.dg-photo-placeholder { width: 90px; height: 90px; border: 2px dashed rgba(227,30,36,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; }
-.dg-photo-hint { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(0,0,0,0.2); text-align: center; line-height: 1.6; }
-.dg-corner { position: absolute; width: 20px; height: 20px; border-color: var(--red); border-style: solid; }
-.dg-corner.tl { top: 10px; left: 10px; border-width: 2px 0 0 2px; }
-.dg-corner.tr { top: 10px; right: 10px; border-width: 2px 2px 0 0; }
-.dg-corner.bl { bottom: 10px; left: 10px; border-width: 0 0 2px 2px; }
-.dg-corner.br { bottom: 10px; right: 10px; border-width: 0 2px 2px 0; }
-.dg-nameplate { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(255,255,255,0.97)); padding: 40px 24px 20px; }
-.dg-name { font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: 2px; color: var(--black); }
-.dg-role { font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--red); margin-top: 4px; }
+
+/* Photo wrapper : fond neutre pour PNG transparent */
+.dg-photo-wrapper {
+  position: relative;
+  display: flex; align-items: flex-end; justify-content: center;
+  background: linear-gradient(160deg, #f0f0f0 0%, #e8e8e8 100%);
+  overflow: hidden;
+  min-height: 480px;
+}
+
+/* Accent rouge subtil en fond */
+.dg-photo-wrapper::before {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 6px; background: var(--red); z-index: 2;
+}
+
+/* L'image PNG — pleine largeur, ancrée en bas */
+.dg-photo-img {
+  width: 100%;
+  max-height: 520px;
+  object-fit: contain;
+  object-position: bottom center;
+  display: block;
+  position: relative; z-index: 1;
+  transform: translateY(20px) scale(0.95);
+  opacity: 0;
+  transition: transform .9s cubic-bezier(.2,0,.2,1), opacity .9s ease;
+}
+.dg-photo-img.anim-in {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+/* Plaque nom — slide depuis le bas */
+.dg-nameplate {
+  position: absolute; bottom: 6px; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(255,255,255,0.92) 40%);
+  padding: 48px 24px 20px;
+  z-index: 3;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform .7s .5s cubic-bezier(.2,0,.2,1), opacity .7s .5s ease;
+}
+.dg-nameplate.anim-in {
+  transform: translateY(0);
+  opacity: 1;
+}
+.dg-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 34px; letter-spacing: 3px;
+  color: var(--black); line-height: 1;
+}
+.dg-role {
+  font-size: 9px; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--red);
+  margin-top: 6px;
+  /* Effet machine à écrire via CSS */
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  transition: width 1s .9s steps(30, end);
+}
+.dg-role.anim-in { width: 100%; }
+
 .dg-content .section-title { margin-bottom: 28px; }
 .dg-quote { position: relative; padding: 28px 28px 28px 50px; background: rgba(227,30,36,0.03); border: 1px solid rgba(227,30,36,0.15); margin-bottom: 24px; }
 .dg-quote::before { content: '"'; position: absolute; left: 14px; top: 6px; font-family: 'Playfair Display', serif; font-size: 64px; line-height: 1; color: var(--red); opacity: .4; }
@@ -333,8 +385,7 @@ section { padding: 90px 48px; }
 
 .slide-card {
   flex: 0 0 320px;
-  border-radius: 20
-px;
+  border-radius: 2px;
   overflow: hidden;
   position: relative;
 }
@@ -539,61 +590,61 @@ footer { background: var(--bg-dark); padding: 36px 48px; display: flex; justify-
       <!-- 10 premières images du dossier AFRINEGOCE -->
       <div class="slide-card">
         <div class="slide-img-wrap">
-          <img src="images/PHOTO1.jpeg" alt="AFRINEGOCE terrain 1">
+          <img src="images/1 (1).jpg" alt="AFRINEGOCE terrain 1" onerror="this.parentElement.classList.add('no-img')">
           <div class="slide-fallback">📦<br><span>Photo 1</span></div>
         </div>
       </div>
       <div class="slide-card">
         <div class="slide-img-wrap">
-          <img src="images/PHOTO2.jpeg" alt="AFRINEGOCE terrain 2"> 
+          <img src="images/1 (2).jpg" alt="AFRINEGOCE terrain 2" onerror="this.parentElement.classList.add('no-img')">
           <div class="slide-fallback">🏭<br><span>Photo 2</span></div>
         </div>
       </div>
       <div class="slide-card">
         <div class="slide-img-wrap">
-          <img src="images/PHOTO3.jpeg" alt="AFRINEGOCE terrain 3"> 
+          <img src="images/1 (3).jpg" alt="AFRINEGOCE terrain 3" onerror="this.parentElement.classList.add('no-img')">
           <div class="slide-fallback">🤝<br><span>Photo 3</span></div>
         </div>
       </div>
       <div class="slide-card">
         <div class="slide-img-wrap">
-          <img src="images/PHOTO4.jpeg" alt="AFRINEGOCE terrain 4"> 
+          <img src="images/1 (4).jpg" alt="AFRINEGOCE terrain 4" onerror="this.parentElement.classList.add('no-img')">
           <div class="slide-fallback">🚢<br><span>Photo 4</span></div>
         </div>
       </div>
       <div class="slide-card">
         <div class="slide-img-wrap">
-          <img src="images/PHOTO5.jpeg" alt="AFRINEGOCE terrain 5"> 
+          <img src="images/1 (5).jpg" alt="AFRINEGOCE terrain 5" onerror="this.parentElement.classList.add('no-img')">
           <div class="slide-fallback">📋<br><span>Photo 5</span></div>
         </div>
       </div>
       <div class="slide-card">
         <div class="slide-img-wrap">
-          <img src="images/PHOTO6.jpeg" alt="AFRINEGOCE terrain 6">
+          <img src="images/1 (6).jpg" alt="AFRINEGOCE terrain 6" onerror="this.parentElement.classList.add('no-img')">
           <div class="slide-fallback">🏢<br><span>Photo 6</span></div>
         </div>
       </div>
       <div class="slide-card">
         <div class="slide-img-wrap">
-          <img src="images/PHOTO7.jpeg" alt="AFRINEGOCE terrain 7"> 
+          <img src="images/1 (7).jpg" alt="AFRINEGOCE terrain 7" onerror="this.parentElement.classList.add('no-img')">
           <div class="slide-fallback">✈️<br><span>Photo 7</span></div>
         </div>
       </div>
       <div class="slide-card">
         <div class="slide-img-wrap">
-          <img src="images/PHOTO8.jpeg" alt="AFRINEGOCE terrain 8"> 
+          <img src="images/1 (8).jpg" alt="AFRINEGOCE terrain 8" onerror="this.parentElement.classList.add('no-img')">
           <div class="slide-fallback">📦<br><span>Photo 8</span></div>
         </div>
       </div>
       <div class="slide-card">
         <div class="slide-img-wrap">
-          <img src="images/PHOTO9.jpeg" alt="AFRINEGOCE terrain 9"> 
+          <img src="images/1 (9).jpg" alt="AFRINEGOCE terrain 9" onerror="this.parentElement.classList.add('no-img')">
           <div class="slide-fallback">🤝<br><span>Photo 9</span></div>
         </div>
       </div>
       <div class="slide-card">
         <div class="slide-img-wrap">
-          <img src="images/PHOTO10.jpeg" alt="AFRINEGOCE terrain 10"> 
+          <img src="images/1 (10).jpg" alt="AFRINEGOCE terrain 10" onerror="this.parentElement.classList.add('no-img')">
           <div class="slide-fallback">🏭<br><span>Photo 10</span></div>
         </div>
       </div>
@@ -696,18 +747,16 @@ footer { background: var(--bg-dark); padding: 36px 48px; display: flex; justify-
 
 <!-- DG -->
 <section id="dg">
-  <div class="dg-photo-wrapper reveal-left">
-    <div class="dg-photo-frame">
-      <div class="dg-corner tl"></div>
-      <div class="dg-corner tr"></div>
-      <div class="dg-corner bl"></div>
-      <div class="dg-corner br"></div>
-      <div class="dg-photo-placeholder">👤</div>
-      <div class="dg-photo-hint">Insérer la photo<br>du Directeur Général</div>
-      <div class="dg-nameplate">
-        <div class="dg-name">Mohamed Celeste</div>
-        <div class="dg-role">Directeur Général — CEO</div>
-      </div>
+  <div class="dg-photo-wrapper" id="dgWrapper">
+    <img
+      src="images/imagedg_Plan de travail 1.png"
+      alt="Mohamed Celeste — Directeur Général AFRINEGOCE"
+      class="dg-photo-img"
+      id="dgImg"
+    >
+    <div class="dg-nameplate" id="dgNameplate">
+      <div class="dg-name">Mohamed Celeste</div>
+      <div class="dg-role" id="dgRole">Directeur Général — CEO · AFRINEGOCE</div>
     </div>
   </div>
   <div class="dg-content reveal-right">
@@ -890,6 +939,27 @@ const statObs = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 const statsBlock = document.querySelector('.hero-stats');
 if (statsBlock) statObs.observe(statsBlock);
+
+/* DG PHOTO ANIMATION */
+(function() {
+  const wrapper = document.getElementById('dgWrapper');
+  const img = document.getElementById('dgImg');
+  const nameplate = document.getElementById('dgNameplate');
+  const role = document.getElementById('dgRole');
+  if (!wrapper) return;
+  const dgObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        img.classList.add('anim-in');
+        nameplate.classList.add('anim-in');
+        setTimeout(() => role.classList.add('anim-in'), 900);
+        dgObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  dgObs.observe(wrapper);
+})();
+
 </script>
 </body>
 </html>
