@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFRINEGOCE — Le pont intelligent entre l'Afrique et la Chine</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;700;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #E31E24;
+  --dark-red: #B01519;
+  --black: #111111;
+  --text: #1A1A1A;
+  --text-muted: #6B6B6B;
+  --border: #E8E8E8;
+  --bg: #FFFFFF;
+  --bg-alt: #F8F8F8;
+  --bg-dark: #111111;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+/* ══ NAV ══ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 68px;
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  transition: box-shadow .3s;
+}
+nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.08); }
+
+.nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.nav-logo-badge {
+  width: 42px; height: 42px; background: var(--red);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', sans-serif; font-size: 18px;
+  color: #fff; letter-spacing: 1px;
+  clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+}
+.nav-logo-text { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 3px; color: var(--black); }
+.nav-logo-text span { color: var(--red); }
+
+.nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+.nav-links a {
+  font-size: 10px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--text-muted);
+  text-decoration: none; position: relative; transition: color .2s;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+  height: 2px; background: var(--red);
+  transform: scaleX(0); transform-origin: left; transition: transform .25s;
+}
+.nav-links a:hover { color: var(--red); }
+.nav-links a:hover::after { transform: scaleX(1); }
+
+.nav-cta {
+  background: var(--red); color: #fff;
+  padding: 10px 26px; font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; text-decoration: none;
+  clip-path: polygon(6% 0%, 100% 0%, 94% 100%, 0% 100%);
+  transition: background .2s, transform .2s; white-space: nowrap;
+}
+.nav-cta:hover { background: var(--dark-red); transform: translateX(3px); }
+
+/* Hamburger */
+.hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 8px; background: none; border: none;
+}
+.hamburger span { display: block; width: 26px; height: 2px; background: var(--black); border-radius: 2px; transition: transform .3s, opacity .3s; }
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile menu */
+.mobile-menu {
+  display: none; position: fixed;
+  top: 68px; left: 0; right: 0; bottom: 0;
+  background: #fff; z-index: 199;
+  flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+  transform: translateX(100%); transition: transform .35s cubic-bezier(.4,0,.2,1);
+}
+.mobile-menu.open { transform: translateX(0); }
+.mobile-menu a { font-family: 'Bebas Neue', sans-serif; font-size: 38px; letter-spacing: 3px; color: var(--black); text-decoration: none; transition: color .2s; }
+.mobile-menu a:hover { color: var(--red); }
+.mobile-menu .mob-cta { background: var(--red); color: #fff; padding: 14px 44px; font-size: 16px; clip-path: polygon(6% 0%, 100% 0%, 94% 100%, 0% 100%); }
+
+@media (max-width: 960px) {
+  nav { padding: 0 24px; }
+  .nav-links, .nav-cta { display: none; }
+  .hamburger { display: flex; }
+  .mobile-menu { display: flex; }
+}
+
+/* ══ HERO ══ */
+#hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 88px 48px 60px;
+  position: relative; overflow: hidden; background: var(--bg);
+}
+.hero-line {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
+  background: var(--red); transform-origin: top;
+  animation: lineGrow .9s cubic-bezier(.4,0,.2,1) forwards;
+}
+@keyframes lineGrow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+.hero-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(227,30,36,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(227,30,36,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.hero-circle {
+  position: absolute; right: -120px; top: 50%; transform: translateY(-50%);
+  width: 560px; height: 560px; border-radius: 50%;
+  border: 1px solid rgba(227,30,36,0.12);
+  animation: circleIn 1.2s .3s both;
+}
+.hero-circle::before { content: ''; position: absolute; inset: 50px; border-radius: 50%; border: 1px solid rgba(227,30,36,0.07); }
+.hero-circle::after {
+  content: ''; position: absolute; inset: 100px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(227,30,36,0.05), transparent 70%);
+  animation: breathe 4s 1s ease-in-out infinite;
+}
+@keyframes circleIn { from{opacity:0;transform:translateY(-50%) scale(.8)} to{opacity:1;transform:translateY(-50%) scale(1)} }
+@keyframes breathe { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+
+.hero-inner { position: relative; z-index: 2; width: 100%; }
+
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 10px; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--red);
+  margin-bottom: 24px; animation: fadeUp .7s .1s both;
+}
+.hero-tag::before { content: ''; width: 32px; height: 2px; background: var(--red); }
+
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 12vw, 160px);
+  line-height: .92; letter-spacing: 2px; color: var(--black);
+  animation: fadeUp .8s .25s both;
+}
+.hero-title .red { color: var(--red); }
+.hero-title .outline { color: var(--black); }
+
+.hero-row {
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 40px;
+  margin-top: 40px; animation: fadeUp .8s .45s both;
+}
+.hero-sub { font-size: 13px; font-weight: 300; line-height: 1.85; color: var(--text-muted); max-width: 420px; }
+.hero-btns { display: flex; gap: 14px; flex-shrink: 0; }
+
+.btn-red {
+  background: var(--red); color: #fff;
+  padding: 14px 32px; font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; text-decoration: none;
+  clip-path: polygon(6% 0%, 100% 0%, 94% 100%, 0% 100%);
+  transition: background .2s, transform .2s;
+}
+.btn-red:hover { background: var(--dark-red); transform: translateX(4px); }
+.btn-ghost {
+  border: 1.5px solid var(--border); color: var(--text);
+  padding: 14px 32px; font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; text-decoration: none;
+  transition: border-color .2s, color .2s;
+}
+.btn-ghost:hover { border-color: var(--red); color: var(--red); }
+
+.hero-stats {
+  display: flex; gap: 0; margin-top: 60px;
+  border-top: 1px solid var(--border);
+  animation: fadeUp .8s .75s both;
+}
+.hero-stat { flex: 1; padding: 24px 0; border-right: 1px solid var(--border); }
+.hero-stat:last-child { border-right: none; }
+.hero-stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 44px; line-height: 1; color: var(--red); }
+.hero-stat-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-top: 6px; }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+
+/* ══ TICKER ══ */
+.ticker { background: var(--red); padding: 12px 0; overflow: hidden; white-space: nowrap; }
+.ticker-inner { display: inline-block; animation: ticker 22s linear infinite; }
+.ticker-inner span { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #fff; padding: 0 32px; }
+.ticker-inner span::after { content: '✦'; margin-left: 32px; opacity: .6; }
+@keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ══ SECTIONS BASE ══ */
+section { padding: 90px 48px; }
+.section-label { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.section-label::before { content: ''; width: 36px; height: 2px; background: var(--red); flex-shrink: 0; }
+.section-label span { font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--red); }
+.section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 5vw, 58px); letter-spacing: 2px; line-height: 1.02; color: var(--black); }
+.section-title em { font-style: normal; color: var(--red); }
+
+/* ══ MISSION ══ */
+#mission { background: var(--bg); display: grid; grid-template-columns: 1.1fr 1fr; gap: 80px; align-items: center; }
+.mission-text .section-title { margin-bottom: 22px; }
+.mission-text p { font-size: 14px; font-weight: 300; line-height: 1.9; color: var(--text-muted); margin-bottom: 14px; }
+.mission-quote { margin-top: 28px; padding: 20px 24px; border-left: 3px solid var(--red); background: rgba(227,30,36,0.04); font-family: 'Playfair Display', serif; font-style: italic; font-size: 15px; color: var(--text); line-height: 1.7; }
+.mission-visual { display: flex; align-items: center; justify-content: center; }
+.mission-diamond { width: 260px; height: 260px; border: 1.5px solid rgba(227,30,36,0.25); transform: rotate(45deg); display: flex; align-items: center; justify-content: center; position: relative; animation: rotateSlow 20s linear infinite; }
+@keyframes rotateSlow { from{transform:rotate(45deg)} to{transform:rotate(405deg)} }
+.mission-diamond::before { content: ''; position: absolute; inset: 18px; border: 1px solid rgba(227,30,36,0.12); }
+.mission-diamond-inner { transform: rotate(-45deg); text-align: center; animation: rotateSlowR 20s linear infinite; }
+@keyframes rotateSlowR { from{transform:rotate(-45deg)} to{transform:rotate(-405deg)} }
+.mission-diamond-inner .big { font-family: 'Bebas Neue', sans-serif; font-size: 50px; color: var(--red); line-height: 1; }
+.mission-diamond-inner .small { font-size: 8px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); }
+
+/* ══ AXES ══ */
+#axes { background: var(--bg-alt); }
+.axes-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 50px; }
+.axes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.axe-card { padding: 40px 32px; background: var(--bg); border: 1px solid var(--border); position: relative; overflow: hidden; transition: transform .3s, box-shadow .3s, border-color .3s; }
+.axe-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--red); transform: scaleX(0); transform-origin: left; transition: transform .35s; }
+.axe-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.07); border-color: rgba(227,30,36,0.2); }
+.axe-card:hover::before { transform: scaleX(1); }
+.axe-num { font-family: 'Bebas Neue', sans-serif; font-size: 72px; line-height: 1; color: rgba(227,30,36,0.07); position: absolute; top: 16px; right: 20px; transition: color .3s; }
+.axe-card:hover .axe-num { color: rgba(227,30,36,0.15); }
+.axe-icon { width: 44px; height: 44px; background: rgba(227,30,36,0.07); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 18px; }
+.axe-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 1px; color: var(--black); margin-bottom: 6px; }
+.axe-subtitle { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--red); margin-bottom: 20px; }
+.axe-list { list-style: none; }
+.axe-list li { font-size: 12px; color: var(--text-muted); padding: 7px 0; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 8px; line-height: 1.5; }
+.axe-list li:last-child { border-bottom: none; }
+.axe-list li::before { content: '—'; color: var(--red); flex-shrink: 0; }
+.axe-formule-tag { display: inline-block; background: var(--red); color: #fff; font-size: 8px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 3px 10px; margin: 18px 0 8px; }
+.axe-price-list { list-style: none; }
+.axe-price-list li { font-size: 11px; color: var(--text-muted); padding: 3px 0; }
+
+/* ══ FORMULES ══ */
+#formules { background: var(--bg-dark); }
+#formules .section-title { color: #fff; }
+#formules .section-label span { color: rgba(255,255,255,0.6); }
+#formules .section-label::before { background: var(--red); }
+.formules-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 50px; }
+.formule-card { padding: 36px 28px; border: 1px solid rgba(255,255,255,0.08); position: relative; transition: border-color .3s, transform .3s; }
+.formule-card:hover { border-color: rgba(227,30,36,0.5); transform: translateY(-4px); }
+.formule-card.featured { background: var(--red); border-color: var(--red); }
+.formule-tag { font-size: 8px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 18px; }
+.formule-card.featured .formule-tag { color: rgba(255,255,255,0.85); }
+.formule-name { font-family: 'Bebas Neue', sans-serif; font-size: 46px; letter-spacing: 3px; line-height: 1; color: #fff; margin-bottom: 10px; }
+.formule-price { font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid rgba(255,255,255,0.1); line-height: 1.5; }
+.formule-price strong { font-size: 20px; color: #fff; }
+.formule-feat { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.7; }
+.formule-card.featured .formule-feat { color: rgba(255,255,255,0.9); }
+
+/* ══ DG ══ */
+#dg { background: var(--bg); display: grid; grid-template-columns: 1fr 1.3fr; gap: 70px; align-items: center; }
+.dg-photo-wrapper { position: relative; }
+.dg-photo-frame { aspect-ratio: 3/4; background: var(--bg-alt); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; position: relative; overflow: hidden; }
+.dg-photo-frame::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--red); }
+.dg-photo-placeholder { width: 90px; height: 90px; border: 2px dashed rgba(227,30,36,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; }
+.dg-photo-hint { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(0,0,0,0.2); text-align: center; line-height: 1.6; }
+.dg-corner { position: absolute; width: 20px; height: 20px; border-color: var(--red); border-style: solid; }
+.dg-corner.tl { top: 10px; left: 10px; border-width: 2px 0 0 2px; }
+.dg-corner.tr { top: 10px; right: 10px; border-width: 2px 2px 0 0; }
+.dg-corner.bl { bottom: 10px; left: 10px; border-width: 0 0 2px 2px; }
+.dg-corner.br { bottom: 10px; right: 10px; border-width: 0 2px 2px 0; }
+.dg-nameplate { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(255,255,255,0.97)); padding: 40px 24px 20px; }
+.dg-name { font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: 2px; color: var(--black); }
+.dg-role { font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--red); margin-top: 4px; }
+.dg-content .section-title { margin-bottom: 28px; }
+.dg-quote { position: relative; padding: 28px 28px 28px 50px; background: rgba(227,30,36,0.03); border: 1px solid rgba(227,30,36,0.15); margin-bottom: 24px; }
+.dg-quote::before { content: '"'; position: absolute; left: 14px; top: 6px; font-family: 'Playfair Display', serif; font-size: 64px; line-height: 1; color: var(--red); opacity: .4; }
+.dg-quote p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 15px; line-height: 1.8; color: var(--text); }
+.dg-quote cite { display: block; margin-top: 12px; font-style: normal; font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--red); }
+.dg-bio { font-size: 13px; font-weight: 300; line-height: 1.9; color: var(--text-muted); }
+
+/* ══ SERVICES ══ */
+#services { background: var(--bg-alt); }
+.services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-top: 50px; background: var(--border); border: 1px solid var(--border); }
+.service-item { padding: 26px 22px; background: var(--bg); position: relative; overflow: hidden; transition: background .25s; }
+.service-item::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--red); transform: scaleX(0); transform-origin: left; transition: transform .3s; }
+.service-item:hover { background: rgba(227,30,36,0.02); }
+.service-item:hover::after { transform: scaleX(1); }
+.service-num { font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: 2px; color: var(--red); margin-bottom: 10px; }
+.service-name { font-size: 12px; font-weight: 600; color: var(--text); line-height: 1.4; }
+
+/* ══ CONTACT ══ */
+#contact { background: var(--bg); display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.contact-info .section-title { margin-bottom: 32px; }
+.contact-item { display: flex; align-items: flex-start; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--border); }
+.contact-icon { width: 36px; height: 36px; flex-shrink: 0; background: rgba(227,30,36,0.08); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.contact-info-label { font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--red); margin-bottom: 4px; }
+.contact-info-value { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.6; }
+.contact-form { background: var(--bg-alt); padding: 40px; border: 1px solid var(--border); }
+.contact-form h3 { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 2px; color: var(--black); margin-bottom: 24px; }
+.form-row { margin-bottom: 14px; }
+.form-row input, .form-row textarea { width: 100%; padding: 13px 16px; background: var(--bg); border: 1px solid var(--border); color: var(--text); font-family: 'Montserrat', sans-serif; font-size: 12px; outline: none; transition: border-color .2s; }
+.form-row input::placeholder, .form-row textarea::placeholder { color: #bbb; }
+.form-row input:focus, .form-row textarea:focus { border-color: var(--red); }
+.form-row textarea { height: 100px; resize: vertical; }
+.form-submit { width: 100%; padding: 15px; background: var(--red); color: #fff; border: none; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; clip-path: polygon(4% 0%, 100% 0%, 96% 100%, 0% 100%); transition: background .2s; }
+.form-submit:hover { background: var(--dark-red); }
+
+/* ══ FOOTER CREDIT ══ */
+.footer-credit {
+  font-size: 12px; font-weight: 400;
+  color: rgba(255,255,255,0.4);
+  text-align: right;
+}
+.footer-credit strong { color: rgba(255,255,255,0.7); font-weight: 700; }
+.footer-heart { color: var(--red); font-size: 14px; }
+
+/* ══ SLIDER GALERIE ══ */
+.slider-wrapper {
+  overflow: hidden;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.slider-wrapper:active { cursor: grabbing; }
+
+.slider-track {
+  display: flex;
+  gap: 20px;
+  padding: 0 48px;
+  transition: transform .45s cubic-bezier(.4,0,.2,1);
+  will-change: transform;
+}
+
+.slide-card {
+  flex: 0 0 320px;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.slide-img-wrap {
+  width: 320px; height: 220px;
+  background: var(--border);
+  position: relative; overflow: hidden;
+}
+.slide-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .4s;
+}
+.slide-card:hover .slide-img-wrap img { transform: scale(1.04); }
+
+.slide-img-wrap.no-img img { display: none; }
+.slide-img-wrap.no-img .slide-fallback { display: flex; }
+
+.slide-fallback {
+  display: none;
+  position: absolute; inset: 0;
+  flex-direction: column; align-items: center; justify-content: center;
+  background: var(--bg-alt);
+  font-size: 32px; gap: 8px;
+  color: var(--text-muted);
+}
+.slide-fallback span { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+
+/* Flèches */
+.slide-arrow {
+  width: 44px; height: 44px;
+  background: var(--bg); border: 1px solid var(--border);
+  font-size: 22px; cursor: pointer; color: var(--text);
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, border-color .2s, color .2s;
+  flex-shrink: 0;
+}
+.slide-arrow:hover { background: var(--red); border-color: var(--red); color: #fff; }
+
+/* Dots */
+.slide-dots { display: flex; gap: 8px; }
+.slide-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%; background: var(--border);
+  cursor: pointer; transition: background .2s, transform .2s;
+  border: none;
+}
+.slide-dot.active { background: var(--red); transform: scale(1.3); }
+
+@media (max-width: 960px) {
+  .slide-card { flex: 0 0 260px; }
+  .slide-img-wrap { width: 260px; height: 180px; }
+  .slider-track { padding: 0 24px; }
+}
+@media (max-width: 480px) {
+  .slide-card { flex: 0 0 220px; }
+  .slide-img-wrap { width: 220px; height: 160px; }
+}
+
+footer { background: var(--bg-dark); padding: 36px 48px; display: flex; justify-content: space-between; align-items: center; border-top: 3px solid var(--red); }
+.footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 3px; color: #fff; }
+.footer-logo span { color: var(--red); }
+.footer-tagline { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-top: 4px; }
+.footer-copy { font-size: 10px; color: rgba(255,255,255,0.25); }
+
+/* ══ SCROLL REVEAL ══ */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .65s ease, transform .65s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-left { opacity: 0; transform: translateX(-30px); transition: opacity .65s ease, transform .65s ease; }
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+.reveal-right { opacity: 0; transform: translateX(30px); transition: opacity .65s ease, transform .65s ease; }
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 1100px) { .services-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 960px) {
+  section { padding: 60px 24px; }
+  #hero { padding: 88px 24px 50px; }
+  .hero-title { font-size: clamp(64px, 16vw, 110px); }
+  .hero-row { flex-direction: column; align-items: flex-start; gap: 24px; }
+  #mission, #dg, #contact { grid-template-columns: 1fr; gap: 40px; }
+  .axes-grid, .formules-grid { grid-template-columns: 1fr; }
+  .services-grid { grid-template-columns: 1fr 1fr; }
+  .axes-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+  footer { flex-direction: column; gap: 12px; text-align: center; }
+  .hero-stats { flex-wrap: wrap; }
+  .hero-stat { min-width: 45%; }
+  .mission-visual { display: none; }
+  .hero-circle { display: none; }
+}
+@media (max-width: 480px) {
+  .hero-title { font-size: 52px; }
+  .services-grid { grid-template-columns: 1fr; }
+  .hero-stats { flex-direction: column; gap: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <div class="nav-logo-badge">AN</div>
+    <div class="nav-logo-text"><span>AFRI</span>NEGOCE</div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#hero">Accueil</a></li>
+    <li><a href="#mission">Mission</a></li>
+    <li><a href="#axes">Axes</a></li>
+    <li><a href="#formules">Formules</a></li>
+    <li><a href="#dg">À propos</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Nous contacter</a>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MENU MOBILE -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#hero" onclick="closeMobile()">Accueil</a>
+  <a href="#mission" onclick="closeMobile()">Mission</a>
+  <a href="#axes" onclick="closeMobile()">Axes</a>
+  <a href="#formules" onclick="closeMobile()">Formules</a>
+  <a href="#dg" onclick="closeMobile()">À propos</a>
+  <a href="#services" onclick="closeMobile()">Services</a>
+  <a href="#contact" class="mob-cta" onclick="closeMobile()">Nous contacter</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-line"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-circle"></div>
+  <div class="hero-inner">
+    <div class="hero-tag">Guangzhou · Niamey</div>
+    <h1 class="hero-title">
+      Le pont<br>
+      <span class="red">intelligent</span><br>
+      <span class="outline">Afrique–Chine</span>
+    </h1>
+    <div class="hero-row">
+      <p class="hero-sub">Sourcing professionnel, représentation d'entreprises africaines, média économique et formation — opérant depuis Guangzhou pour toute l'Afrique.</p>
+      <div class="hero-btns">
+        <a href="#services" class="btn-red">Nos services</a>
+        <a href="#contact" class="btn-ghost">Prendre contact</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num" data-target="3" data-suffix="">3</div><div class="hero-stat-label">Axes stratégiques</div></div>
+      <div class="hero-stat"><div class="hero-stat-num" data-target="2" data-suffix="">2</div><div class="hero-stat-label">Pays de présence</div></div>
+      <div class="hero-stat"><div class="hero-stat-num" data-target="8" data-suffix="+">8+</div><div class="hero-stat-label">Services premium</div></div>
+      <div class="hero-stat"><div class="hero-stat-num" data-target="100" data-suffix="%">100%</div><div class="hero-stat-label">Sur le terrain</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span>Sourcing Professionnel</span><span>Contrôle Qualité</span>
+    <span>Représentation en Chine</span><span>Business TV</span>
+    <span>Formation Import-Export</span><span>Niger–Chine</span>
+    <span>Sourcing Professionnel</span><span>Contrôle Qualité</span>
+    <span>Représentation en Chine</span><span>Business TV</span>
+    <span>Formation Import-Export</span><span>Niger–Chine</span>
+  </div>
+</div>
+
+<!-- MISSION -->
+<section id="mission">
+  <div class="mission-text reveal-left">
+    <div class="section-label"><span>Notre raison d'être</span></div>
+    <h2 class="section-title">Mission &<br><em>Positionnement</em></h2>
+    <p>Créer une passerelle moderne et crédible entre les opérateurs économiques africains et les opportunités d'affaire en Chine, à travers des services à forte valeur ajoutée : sourcing professionnel, représentation, média économique et formation.</p>
+    <p>AFRINEGOCE se positionne comme un centre de référence à Guangzhou, combinant expertise en sourcing, représentation d'entreprise africaine, média économique et formation professionnelle.</p>
+    <div class="mission-quote">« Votre Partenaire d'Affaire idéal entre l'Afrique et la Chine. »</div>
+  </div>
+  <div class="mission-visual reveal-right">
+    <div class="mission-diamond">
+      <div class="mission-diamond-inner">
+        <div class="big">AN</div>
+        <div class="small">Afrique · Chine</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERIE PHOTOS -->
+<section id="galerie" style="padding:80px 0;background:var(--bg-alt);overflow:hidden;">
+  <div style="padding:0 48px;margin-bottom:40px;" class="reveal">
+    <div class="section-label"><span>Sur le terrain</span></div>
+    <h2 class="section-title">En <em>Action</em></h2>
+  </div>
+
+  <div class="slider-wrapper">
+    <div class="slider-track" id="sliderTrack">
+      <!-- 10 premières images du dossier AFRINEGOCE -->
+      <div class="slide-card">
+        <div class="slide-img-wrap">
+          <img src="images/1 (1).jpg" alt="AFRINEGOCE terrain 1" onerror="this.parentElement.classList.add('no-img')">
+          <div class="slide-fallback">📦<br><span>Photo 1</span></div>
+        </div>
+      </div>
+      <div class="slide-card">
+        <div class="slide-img-wrap">
+          <img src="images/1 (2).jpg" alt="AFRINEGOCE terrain 2" onerror="this.parentElement.classList.add('no-img')">
+          <div class="slide-fallback">🏭<br><span>Photo 2</span></div>
+        </div>
+      </div>
+      <div class="slide-card">
+        <div class="slide-img-wrap">
+          <img src="images/1 (3).jpg" alt="AFRINEGOCE terrain 3" onerror="this.parentElement.classList.add('no-img')">
+          <div class="slide-fallback">🤝<br><span>Photo 3</span></div>
+        </div>
+      </div>
+      <div class="slide-card">
+        <div class="slide-img-wrap">
+          <img src="images/1 (4).jpg" alt="AFRINEGOCE terrain 4" onerror="this.parentElement.classList.add('no-img')">
+          <div class="slide-fallback">🚢<br><span>Photo 4</span></div>
+        </div>
+      </div>
+      <div class="slide-card">
+        <div class="slide-img-wrap">
+          <img src="images/1 (5).jpg" alt="AFRINEGOCE terrain 5" onerror="this.parentElement.classList.add('no-img')">
+          <div class="slide-fallback">📋<br><span>Photo 5</span></div>
+        </div>
+      </div>
+      <div class="slide-card">
+        <div class="slide-img-wrap">
+          <img src="images/1 (6).jpg" alt="AFRINEGOCE terrain 6" onerror="this.parentElement.classList.add('no-img')">
+          <div class="slide-fallback">🏢<br><span>Photo 6</span></div>
+        </div>
+      </div>
+      <div class="slide-card">
+        <div class="slide-img-wrap">
+          <img src="images/1 (7).jpg" alt="AFRINEGOCE terrain 7" onerror="this.parentElement.classList.add('no-img')">
+          <div class="slide-fallback">✈️<br><span>Photo 7</span></div>
+        </div>
+      </div>
+      <div class="slide-card">
+        <div class="slide-img-wrap">
+          <img src="images/1 (8).jpg" alt="AFRINEGOCE terrain 8" onerror="this.parentElement.classList.add('no-img')">
+          <div class="slide-fallback">📦<br><span>Photo 8</span></div>
+        </div>
+      </div>
+      <div class="slide-card">
+        <div class="slide-img-wrap">
+          <img src="images/1 (9).jpg" alt="AFRINEGOCE terrain 9" onerror="this.parentElement.classList.add('no-img')">
+          <div class="slide-fallback">🤝<br><span>Photo 9</span></div>
+        </div>
+      </div>
+      <div class="slide-card">
+        <div class="slide-img-wrap">
+          <img src="images/1 (10).jpg" alt="AFRINEGOCE terrain 10" onerror="this.parentElement.classList.add('no-img')">
+          <div class="slide-fallback">🏭<br><span>Photo 10</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flèches + dots -->
+  <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-top:28px;">
+    <button class="slide-arrow" id="slidePrev" aria-label="Précédent">‹</button>
+    <div class="slide-dots" id="slideDots"></div>
+    <button class="slide-arrow" id="slideNext" aria-label="Suivant">›</button>
+  </div>
+</section>
+
+<!-- AXES -->
+<section id="axes">
+  <div class="axes-header reveal">
+    <div>
+      <div class="section-label"><span>Stratégie</span></div>
+      <h2 class="section-title">Les <em>3 Axes</em> Stratégiques</h2>
+    </div>
+  </div>
+  <div class="axes-grid">
+    <div class="axe-card reveal">
+      <div class="axe-num">01</div>
+      <div class="axe-icon">🏭</div>
+      <div class="axe-title">Sourcing & Représentation</div>
+      <div class="axe-subtitle">Premium</div>
+      <ul class="axe-list">
+        <li>Recherche d'usines fiables et négociation directe</li>
+        <li>Contrôle qualité (photo, vidéo, rapport)</li>
+        <li>Supervision de production et regroupement de commandes</li>
+        <li>Représentation d'entreprises africaines en Chine</li>
+      </ul>
+      <div class="axe-formule-tag">Nos formules</div>
+      <ul class="axe-price-list">
+        <li>· Basic — 5% du montant de la commande</li>
+        <li>· Pro — 8% du montant de la commande</li>
+        <li>· Elite — Contrat mensuel 800–1 500 USD</li>
+      </ul>
+    </div>
+    <div class="axe-card reveal">
+      <div class="axe-num">02</div>
+      <div class="axe-icon">📺</div>
+      <div class="axe-title">Business Média</div>
+      <div class="axe-subtitle">Business TV</div>
+      <ul class="axe-list">
+        <li>Présentation de produits et stocks disponibles</li>
+        <li>Intervention et témoignage d'entrepreneurs</li>
+        <li>Promotion de foires et dîners d'affaires</li>
+        <li>Capsules éducatives : « Comment acheter en Chine sans se tromper »</li>
+      </ul>
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+        <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:6px;">Objectif</div>
+        <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">Devenir la première vitrine audiovisuelle du commerce Afrique–Chine</p>
+      </div>
+    </div>
+    <div class="axe-card reveal">
+      <div class="axe-num">03</div>
+      <div class="axe-icon">🎓</div>
+      <div class="axe-title">Plateforme Formation</div>
+      <div class="axe-subtitle">Opportunités & Pro</div>
+      <ul class="axe-list">
+        <li>Formation : Maîtriser le sourcing en Chine (présentiel & en ligne)</li>
+        <li>Coaching individuel</li>
+        <li>Plateforme privée de fournisseurs certifiés</li>
+        <li>Accompagnement à la création d'entreprise import/export</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FORMULES -->
+<section id="formules">
+  <div class="reveal">
+    <div class="section-label"><span>Tarification</span></div>
+    <h2 class="section-title">Nos <em>Formules</em></h2>
+  </div>
+  <div class="formules-grid">
+    <div class="formule-card reveal">
+      <div class="formule-tag">Entrée de gamme</div>
+      <div class="formule-name">BASIC</div>
+      <div class="formule-price"><strong>5%</strong> du montant de la commande</div>
+      <div class="formule-feat">Idéal pour les premières commandes. Recherche d'usine et contrôle qualité inclus.</div>
+    </div>
+    <div class="formule-card featured reveal">
+      <div class="formule-tag">⭐ Le plus populaire</div>
+      <div class="formule-name">PRO</div>
+      <div class="formule-price"><strong>8%</strong> du montant de la commande</div>
+      <div class="formule-feat">Service complet avec suivi de production et regroupement de commandes.</div>
+    </div>
+    <div class="formule-card reveal">
+      <div class="formule-tag">Partenariat stratégique</div>
+      <div class="formule-name">ELITE</div>
+      <div class="formule-price">À partir de <strong>800–1 500 USD</strong>/mois</div>
+      <div class="formule-feat">Représentation permanente, contrat mensuel, service dédié et personnalisé.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DG -->
+<section id="dg">
+  <div class="dg-photo-wrapper reveal-left">
+    <div class="dg-photo-frame">
+      <div class="dg-corner tl"></div>
+      <div class="dg-corner tr"></div>
+      <div class="dg-corner bl"></div>
+      <div class="dg-corner br"></div>
+      <div class="dg-photo-placeholder">👤</div>
+      <div class="dg-photo-hint">Insérer la photo<br>du Directeur Général</div>
+      <div class="dg-nameplate">
+        <div class="dg-name">Mohamed Celeste</div>
+        <div class="dg-role">Directeur Général — CEO</div>
+      </div>
+    </div>
+  </div>
+  <div class="dg-content reveal-right">
+    <div class="section-label"><span>Leadership</span></div>
+    <h2 class="section-title">Mot du<br><em>Directeur Général</em></h2>
+    <div class="dg-quote">
+      <p>Le marché sino-africain est une opportunité immense, mais il se mérite. Chez AFRINEGOCE, nous avons construit les ponts que vous n'avez pas à traverser seuls. Chaque commande, chaque partenariat, chaque voyage d'affaires — nous sommes là, à Guangzhou, pour que vous réussissiez.</p>
+      <cite>— Mohamed Celeste, CEO d'AFRINEGOCE</cite>
+    </div>
+    <p class="dg-bio">Fort d'une présence directe à Guangzhou et d'un réseau solide au Niger, Mohamed Celeste incarne la vision d'AFRINEGOCE : être le partenaire de confiance qui transforme les opportunités chinoises en succès africains. Sa maîtrise du terrain, des cultures d'affaires et des rouages du commerce international fait d'AFRINEGOCE bien plus qu'un simple agent — un véritable partenaire stratégique.</p>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="reveal">
+    <div class="section-label"><span>Ce que nous faisons</span></div>
+    <h2 class="section-title">Nos <em>Services</em></h2>
+  </div>
+  <div class="services-grid">
+    <div class="service-item reveal"><div class="service-num">01</div><div class="service-name">Recherche directe d'usines fiables</div></div>
+    <div class="service-item reveal"><div class="service-num">02</div><div class="service-name">Achat de marchandise</div></div>
+    <div class="service-item reveal"><div class="service-num">03</div><div class="service-name">Inspection vidéo + Contrôle qualité</div></div>
+    <div class="service-item reveal"><div class="service-num">04</div><div class="service-name">Regroupement multi-fournisseurs</div></div>
+    <div class="service-item reveal"><div class="service-num">05</div><div class="service-name">Gestion des paiements sécurisés</div></div>
+    <div class="service-item reveal"><div class="service-num">06</div><div class="service-name">Représentation officielle en Chine</div></div>
+    <div class="service-item reveal"><div class="service-num">07</div><div class="service-name">Organisation voyages d'affaires Niger–Chine</div></div>
+    <div class="service-item reveal"><div class="service-num">08</div><div class="service-name">Exchange money (dollars–yuan)</div></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-info reveal-left">
+    <div class="section-label"><span>Parlons-nous</span></div>
+    <h2 class="section-title">Travaillons<br><em>Ensemble</em></h2>
+    <div style="margin-top:28px;">
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div><div class="contact-info-label">Localisation</div><div class="contact-info-value">Guangzhou, Chine · Niamey, Niger</div></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div><div class="contact-info-label">Téléphone</div><div class="contact-info-value">+86 132 5033 9070<br>+227 91 21 71 68</div></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div><div class="contact-info-label">Email</div><div class="contact-info-value">Afrinegoce07@gmail.com</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="contact-form reveal-right">
+    <h3>Envoyez-nous un message</h3>
+    <div class="form-row"><input type="text" placeholder="Votre nom complet"></div>
+    <div class="form-row"><input type="email" placeholder="Votre adresse email"></div>
+    <div class="form-row"><input type="text" placeholder="Votre pays / société"></div>
+    <div class="form-row"><textarea placeholder="Décrivez votre besoin (sourcing, représentation, formation…)"></textarea></div>
+    <button class="form-submit">Envoyer le message</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo"><span>AFRI</span>NEGOCE</div>
+    <div class="footer-tagline">Le pont intelligent entre l'Afrique et la Chine</div>
+    <div class="footer-copy" style="margin-top:6px;">© 2025 AFRINEGOCE — Tous droits réservés</div>
+  </div>
+  <div class="footer-credit">
+    Conçu avec <span class="footer-heart">♥</span> par <strong>Palmares Graphic</strong>
+  </div>
+</footer>
+
+<script>
+/* HAMBURGER */
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+  document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+});
+function closeMobile() {
+  hamburger.classList.remove('open');
+  mobileMenu.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* NAV SCROLL */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+/* SCROLL REVEAL */
+const allReveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+allReveals.forEach(el => obs.observe(el));
+
+/* SLIDER GALERIE */
+(function() {
+  const track = document.getElementById('sliderTrack');
+  const prevBtn = document.getElementById('slidePrev');
+  const nextBtn = document.getElementById('slideNext');
+  const dotsContainer = document.getElementById('slideDots');
+  if (!track) return;
+
+  const cards = track.querySelectorAll('.slide-card');
+  const total = cards.length;
+  let current = 0;
+
+  // Créer les dots
+  cards.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'slide-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Slide ' + (i+1));
+    dot.addEventListener('click', () => goTo(i));
+    dotsContainer.appendChild(dot);
+  });
+
+  function getCardWidth() {
+    return cards[0].offsetWidth + 20; // gap 20px
+  }
+
+  function goTo(index) {
+    current = Math.max(0, Math.min(index, total - 1));
+    track.style.transform = `translateX(-${current * getCardWidth()}px)`;
+    dotsContainer.querySelectorAll('.slide-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+  prevBtn.addEventListener('click', () => goTo(current - 1));
+  nextBtn.addEventListener('click', () => goTo(current + 1));
+
+  // Swipe tactile
+  let startX = 0, isDragging = false;
+  track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; isDragging = true; }, {passive:true});
+  track.addEventListener('touchend', e => {
+    if (!isDragging) return;
+    const diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+    isDragging = false;
+  }, {passive:true});
+
+  // Drag souris
+  let mouseStartX = 0, mouseDragging = false;
+  track.addEventListener('mousedown', e => { mouseStartX = e.clientX; mouseDragging = true; });
+  document.addEventListener('mouseup', e => {
+    if (!mouseDragging) return;
+    const diff = mouseStartX - e.clientX;
+    if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+    mouseDragging = false;
+  });
+})();
+
+function animateNum(el) {
+  const target = parseInt(el.dataset.target);
+  const suffix = el.dataset.suffix || '';
+  let start = null;
+  const dur = 1400;
+  const step = (ts) => {
+    if (!start) start = ts;
+    const p = Math.min((ts - start) / dur, 1);
+    const e = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.floor(e * target) + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+const statObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.hero-stat-num[data-target]').forEach(animateNum);
+      statObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+const statsBlock = document.querySelector('.hero-stats');
+if (statsBlock) statObs.observe(statsBlock);
+</script>
+</body>
+</html>
